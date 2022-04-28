@@ -10,7 +10,7 @@ Future<void> main() async {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(MyApp());
+    runApp(const MyApp());
   });
 }
 
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: splashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

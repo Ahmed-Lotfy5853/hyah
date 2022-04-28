@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'signupscreen.dart';
@@ -12,70 +13,74 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late String FirstName = '';
-  late String LastName = '';
-  late String Email = '';
-  late String Phone = '';
-  late String BirthDate = '';
-  late String Gender = '';
-  late String Account = '';
+  late String firstname = '';
+  late String lastname = '';
+  late String email = '';
+  late String phone = '';
+  late String birthdate = '';
+  late String gender = '';
+  late String account = '';
 
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore.instance
         .collection('User')
-        .doc(UserID)
+        .doc(userID)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           try {
             dynamic data = documentSnapshot.data();
-            FirstName = data['FirstName'];
-            LastName = data['LastName'];
-            Email = data['Email'];
-            Phone = data['Phone'];
-            BirthDate = data['BirthDate'];
-            Gender = data['Gender'];
-            Account = data['Account'];
-          } on StateError catch (e) {}
+            firstname = data['FirstName'];
+            lastname = data['LastName'];
+            email = data['Email'];
+            phone = data['Phone'];
+            birthdate = data['BirthDate'];
+            gender = data['Gender'];
+            account = data['Account'];
+          } on StateError catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
         });
       }
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         elevation: 0,
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Name : $FirstName $LastName',
-              style: TextStyle(color: Colors.black, fontSize: 25),
+              'Name : $firstname $lastname',
+              style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Email : $Email',
-              style: TextStyle(color: Colors.black, fontSize: 25),
+              'Email : $email',
+              style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Phone : +20$Phone',
-              style: TextStyle(color: Colors.black, fontSize: 25),
+              'Phone : +20$phone',
+              style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Birth Date : $BirthDate',
-              style: TextStyle(color: Colors.black, fontSize: 25),
+              'Birth Date : $birthdate',
+              style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Gender : $Gender',
-              style: TextStyle(color: Colors.black, fontSize: 25),
+              'Gender : $gender',
+              style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Account : $Account',
-              style: TextStyle(color: Colors.black, fontSize: 25),
+              'Account : $account',
+              style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Container(
               alignment: Alignment.center,
@@ -84,14 +89,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignupScreen(),
+                        builder: (context) => const SignupScreen(),
                       ));
                 },
                 child: Container(
                   alignment: Alignment.center,
                   width: 100,
-                  padding: EdgeInsets.all(5),
-                  child: Text(
+                  padding: const EdgeInsets.all(5),
+                  child: const Text(
                     'Edit',
                     style: TextStyle(color: Colors.white, fontSize: 23),
                   ),

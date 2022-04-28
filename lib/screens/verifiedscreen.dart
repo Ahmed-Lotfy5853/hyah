@@ -1,36 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'loginscreen.dart';
 
 class VerifiedScreen extends StatefulWidget {
-  String FirstName;
-  String LastName;
-  String Email;
-  String Phone;
-  String Password;
-  String BabyName;
-  String BirthDate;
-  String Gender;
-  String Account;
+  String firstName;
+  String lastName;
+  String email;
+  String phone;
+  String password;
+  String babyName;
+  String birthDate;
+  String gender;
+  String account;
   bool verified;
 
-  String UserId;
+  String userId;
 
-  VerifiedScreen({
-    required this.FirstName,
-    required this.LastName,
-    required this.Email,
-    required this.Phone,
-    required this.Password,
-    required this.BabyName,
-    required this.BirthDate,
-    required this.Gender,
-    required this.Account,
+  VerifiedScreen({Key? key,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.phone,
+    required this.password,
+    required this.babyName,
+    required this.birthDate,
+    required this.gender,
+    required this.account,
     required this.verified,
-    required this.UserId,
-  });
+    required this.userId,
+  }) : super(key: key);
 
   @override
   State<VerifiedScreen> createState() => _VerifiedScreenState();
@@ -48,8 +49,8 @@ class _VerifiedScreenState extends State<VerifiedScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(Icons.info_outline),
-                  Text('Please verify your mail'),
+                  const Icon(Icons.info_outline),
+                  const Text('Please verify your mail'),
                   // SizedBox(width: 20,),
                   MaterialButton(
                     onPressed: () async {
@@ -64,13 +65,20 @@ class _VerifiedScreenState extends State<VerifiedScreen> {
                           return Fluttertoast.showToast(
                               msg: 'Check your mail',
                               backgroundColor: Colors.blue);
-                        }).catchError((e) => print(e));
+                        }).catchError((e) {
+                          if (kDebugMode) {
+                            print(e);
+                          }
+
+                        });
                       } else {
                         setState(() {
                           widget.verified =
                               FirebaseAuth.instance.currentUser!.emailVerified;
                         });
-                        print('true authenticated');
+                        if (kDebugMode) {
+                          print('true authenticated');
+                        }
                         Fluttertoast.showToast(
                             msg: 'Your mail is verified',
                             backgroundColor: Colors.blue);
@@ -78,10 +86,10 @@ class _VerifiedScreenState extends State<VerifiedScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => const LoginScreen()));
                     },
                     color: Colors.blue,
-                    child: Text('Send Verifcation'),
+                    child: const Text('Send Verifcation'),
                   )
                 ],
               ),

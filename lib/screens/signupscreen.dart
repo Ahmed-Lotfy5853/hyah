@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hyah/screens/loginscreen.dart';
 import 'package:hyah/screens/profilescreen.dart';
@@ -11,30 +11,30 @@ import '../widgets/textformfield.dart';
 import 'splashscreen.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  TextEditingController SignFirstNameController = TextEditingController();
+  TextEditingController signfirstnamecontroller = TextEditingController();
 
-  TextEditingController SignLastNameController = TextEditingController();
+  TextEditingController signlastnamecontroller = TextEditingController();
 
-  TextEditingController SignupEmailController = TextEditingController();
+  TextEditingController signupemailcontroller = TextEditingController();
 
-  TextEditingController SignupPasswordController = TextEditingController();
-  TextEditingController SignupbabyController = TextEditingController();
+  TextEditingController signuppasswordcontroller = TextEditingController();
+  TextEditingController signupbabycontroller = TextEditingController();
 
-  TextEditingController SignPhoneController = TextEditingController();
-  TextEditingController SignDateController = TextEditingController();
+  TextEditingController signphonecontroller = TextEditingController();
+  TextEditingController signdatecontroller = TextEditingController();
   String gender = 'Male';
   String client = 'Parent';
 
   bool invisible = true;
 
-  var SignKey = GlobalKey<FormState>();
+  var signkey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -42,23 +42,27 @@ class _SignupScreenState extends State<SignupScreen> {
       setState(() {
         FirebaseFirestore.instance
             .collection('User')
-            .doc(UserID)
+            .doc(userID)
             .get()
             .then((DocumentSnapshot documentSnapshot) {
           if (documentSnapshot.exists) {
             setState(() {
               try {
                 dynamic data = documentSnapshot.data();
-                SignFirstNameController.text = data['FirstName'];
-                SignLastNameController.text = data['LastName'];
-                SignupEmailController.text = data['Email'];
-                SignupPasswordController.text = data['Email'];
-                SignPhoneController.text = data['Phone'];
-                SignDateController.text = data['BirthDate'];
-                SignupbabyController.text = data['BirthDate'];
+                signfirstnamecontroller.text = data['FirstName'];
+                signlastnamecontroller.text = data['LastName'];
+                signupemailcontroller.text = data['Email'];
+                signuppasswordcontroller.text = data['Email'];
+                signphonecontroller.text = data['Phone'];
+                signdatecontroller.text = data['BirthDate'];
+                signupbabycontroller.text = data['BirthDate'];
                 gender = data['Gender'];
                 client = data['Account'];
-              } on StateError catch (e) {}
+              } on StateError {
+                (e) {
+                  if(kDebugMode)print(e);
+                };
+              }
             });
           }
         });
@@ -69,16 +73,16 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference User = FirebaseFirestore.instance.collection('User');
+    CollectionReference user = FirebaseFirestore.instance.collection('User');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
         elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: SignKey,
+          key: signkey,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -87,16 +91,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 150,
                       child: TextFormField(
-                        controller: SignFirstNameController,
+                        controller: signfirstnamecontroller,
                         keyboardType: TextInputType.name,
                         decoration: InputDecoration(
                           hintText: 'First Name',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.blue)),
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -106,16 +110,16 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                       ),
                     ),
-                    Container(
+                    SizedBox(
                         width: 150,
                         child: TextFormField(
-                          controller: SignLastNameController,
+                          controller: signlastnamecontroller,
                           keyboardType: TextInputType.name,
                           decoration: InputDecoration(
                             hintText: 'Last Name',
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
-                                borderSide: BorderSide(color: Colors.blue)),
+                                borderSide: const BorderSide(color: Colors.blue)),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -126,11 +130,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         )),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                CustomTextFormField(
-                  Controller: SignupbabyController,
+                customTextFormField(
+                  controller: signupbabycontroller,
                   hint: 'Baby Name',
                   keytype: TextInputType.name,
                   preicon: Icons.child_care,
@@ -141,11 +145,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                CustomTextFormField(
-                  Controller: SignupEmailController,
+                customTextFormField(
+                  controller: signupemailcontroller,
                   hint: 'Email',
                   keytype: TextInputType.emailAddress,
                   preicon: Icons.mail,
@@ -159,11 +163,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                CustomTextFormField(
-                  Controller: SignupPasswordController,
+                customTextFormField(
+                  controller: signuppasswordcontroller,
                   hint: 'Password',
                   keytype: TextInputType.visiblePassword,
                   preicon: Icons.lock,
@@ -183,33 +187,35 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-                  controller: SignPhoneController,
+                  controller: signphonecontroller,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                       hintText: ' Phone',
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: Colors.blue)),
-                      prefixIcon: Icon(Icons.phone),
+                          borderSide: const BorderSide(color: Colors.blue)),
+                      prefixIcon: const Icon(Icons.phone),
                       prefixText: '+20'),
                   validator: (value) {
+
                     if (value!.isEmpty) {
                       return 'Field is empty';
-                    } else if (value!.length == 10) {
+                    } else if (value.length != 10) {
+
                       return 'Invalid number';
                     }
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-                  controller: SignDateController,
+                  controller: signdatecontroller,
                   keyboardType: TextInputType.datetime,
                   onTap: () {
                     showDatePicker(
@@ -219,26 +225,27 @@ class _SignupScreenState extends State<SignupScreen> {
                             initialDate: DateTime(DateTime.now().year - 20,
                                 DateTime.now().month, DateTime.now().day))
                         .then((value) {
-                      SignDateController.text =
-                          DateTime(value!.year, value!.month, value.day)
+                      signdatecontroller.text =
+                          DateTime(value!.year, value.month, value.day)
                               .toString()
                               .replaceAll("00:00:00.000", "");
                     });
                   },
                   decoration: InputDecoration(
                       hintText: 'Birth Date',
-                      prefixIcon: Icon(Icons.calendar_month),
+                      prefixIcon: const Icon(Icons.calendar_month),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: Colors.blue))),
+                          borderSide: const BorderSide(color: Colors.blue))),
                   validator: (value) {
                     if (value!.isEmpty) {
                       //return 'حقل كلمه المرور فارغاً';
                       return 'Field is empty';
                     }
+                    return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -248,7 +255,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       initiallySelectedItemIndex: 0,
                       showSelectedItemAsTrigger: true,
 
-                      itemsList: <String>['Male', 'Female'],
+                      itemsList: const <String>['Male', 'Female'],
                       onItemSelected: (String selectedItem) {
                         setState(() {
                           gender = selectedItem;
@@ -260,7 +267,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           onPressed: onItemTapped,
                           child: Text(
                             item,
-                            style: TextStyle(color: Colors.white, fontSize: 22),
+                            style: const TextStyle(color: Colors.white, fontSize: 22),
                           ),
                         );
                       },
@@ -269,7 +276,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     SelectionMenu<String>(
                       initiallySelectedItemIndex: 0,
                       showSelectedItemAsTrigger: true,
-                      itemsList: <String>['Parent', 'Doctor'],
+                      itemsList: const <String>['Parent', 'Doctor'],
                       onItemSelected: (String selectedItem) {
                         setState(() {
                           client = selectedItem;
@@ -281,7 +288,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           onPressed: onItemTapped,
                           child: Text(
                             item,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 22,
                             ),
@@ -292,33 +299,33 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 InkWell(
                   onTap: () async {
-                    if (SignKey.currentState!.validate()) {
-                      if (UserID == null) {
+                    if (signkey.currentState!.validate()) {
+                      if (userID == null) {
                         // Call the user's CollectionReference to add a new user
                         FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
-                                email: SignupEmailController.text,
-                                password: SignupPasswordController.text)
+                                email: signupemailcontroller.text,
+                                password: signuppasswordcontroller.text)
                             .then((value) {
-                          User.doc(value.user!.uid).set({
+                          user.doc(value.user!.uid).set({
                             'UserId': value.user!.uid,
                             'Verified': value.user!.emailVerified,
-                            'FirstName': SignFirstNameController.text,
+                            'FirstName': signfirstnamecontroller.text,
                             // John Doe
-                            'LastName': SignLastNameController.text,
+                            'LastName': signlastnamecontroller.text,
                             // Stokes and Sons
-                            'BabyName': SignupbabyController.text,
-                            'Email': SignupEmailController.text,
-                            'Password': SignupPasswordController.text,
+                            'BabyName': signupbabycontroller.text,
+                            'Email': signupemailcontroller.text,
+                            'Password': signuppasswordcontroller.text,
                             // 42
-                            'Phone': SignPhoneController.text,
+                            'Phone': signphonecontroller.text,
                             // 42
-                            'BirthDate': SignDateController.text,
+                            'BirthDate': signdatecontroller.text,
                             // 42
                             'Gender': gender,
                             // 42
@@ -329,32 +336,32 @@ class _SignupScreenState extends State<SignupScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => VerifiedScreen(
-                                        FirstName: SignFirstNameController.text,
-                                        LastName: SignLastNameController.text,
-                                        BabyName: SignupbabyController.text,
-                                        Email: SignupEmailController.text,
-                                        Password: SignupPasswordController.text,
-                                        Phone: SignPhoneController.text,
-                                        BirthDate: SignDateController.text,
-                                        Gender: gender,
-                                        Account: client,
-                                        UserId: value.user!.uid,
+                                        firstName: signfirstnamecontroller.text,
+                                        lastName: signlastnamecontroller.text,
+                                        babyName: signupbabycontroller.text,
+                                        email: signupemailcontroller.text,
+                                        password: signuppasswordcontroller.text,
+                                        phone: signphonecontroller.text,
+                                        birthDate: signdatecontroller.text,
+                                        gender: gender,
+                                        account: client,
+                                        userId: value.user!.uid,
                                         verified: value.user!.emailVerified,
                                       )));
                         });
                       } else {
-                        User.doc(UserID).update({
-                          'FirstName': SignFirstNameController.text,
+                        user.doc(userID).update({
+                          'FirstName': signfirstnamecontroller.text,
                           // John Doe
-                          'LastName': SignLastNameController.text,
+                          'LastName': signlastnamecontroller.text,
                           // Stokes and Sons
-                          'BabyName': SignupbabyController.text,
-                          'Email': SignupEmailController.text,
-                          'Password': SignupPasswordController.text,
+                          'BabyName': signupbabycontroller.text,
+                          'Email': signupemailcontroller.text,
+                          'Password': signuppasswordcontroller.text,
                           // 42
-                          'Phone': SignPhoneController.text,
+                          'Phone': signphonecontroller.text,
                           // 42
-                          'BirthDate': SignDateController.text,
+                          'BirthDate': signdatecontroller.text,
                           // 42
                           'Gender': gender,
                           // 42
@@ -364,31 +371,31 @@ class _SignupScreenState extends State<SignupScreen> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfileScreen()));
+                                builder: (context) => const ProfileScreen()));
                       }
                     }
                   },
                   child: Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
                       signed ? 'Save Edit' : 'Sign up',
-                      style: TextStyle(fontSize: 25, color: Colors.white),
+                      style: const TextStyle(fontSize: 25, color: Colors.white),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Visibility(
                   visible: !signed,
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         'Have an account ?',
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.normal),
@@ -398,10 +405,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
+                                  builder: (context) => const LoginScreen(),
                                 ));
                           },
-                          child: Text(
+                          child: const Text(
                             'Login',
                             style: TextStyle(fontSize: 22, color: Colors.blue),
                           ))

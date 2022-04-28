@@ -1,75 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hyah/screens/splashscreen.dart';
 
 import 'loginscreen.dart';
 import 'profilescreen.dart';
 
 class MeasuresScreen extends StatefulWidget {
-  MeasuresScreen({Key? key}) : super(key: key);
+  const MeasuresScreen({Key? key}) : super(key: key);
 
   @override
   State<MeasuresScreen> createState() => _MeasuresScreenState();
 }
 
 class _MeasuresScreenState extends State<MeasuresScreen> {
-  late String BabyPulse = '-';
-  late String BabySpo = '-';
-  late String BabyTemperature = '-';
-  late String IncubationTemperature = '-';
-  late String IncubationHumidity = '-';
-  late String BabyName = '-';
-  late String FirstName = '-';
-  late String Account = '-';
+  late String babypulse = '-';
+  late String babyspo = '-';
+  late String babytemperature = '-';
+  late String incubationtemperature = '-';
+  late String incubationhumidity = '-';
+  late String babyname = '-';
+  late String firstname = '-';
+  late String account = '-';
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
-    var Users = FirebaseFirestore.instance
-        .collection('User')
-        .doc(UserID)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          try {
-            dynamic data = documentSnapshot.data();
-            BabyName = data['BabyName'];
-            FirstName = data['FirstName'];
-            Account = data['Account'];
-          } on StateError catch (e) {}
-        });
-      }
-    });
-    var Measures = FirebaseFirestore.instance
-        .collection('Measures')
-        .doc(UserID)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          try {
-            dynamic data = documentSnapshot.data();
-            BabyPulse = data['BabyPulse'];
-            BabySpo = data['BabySpo'];
-            BabyTemperature = data['BabyTemperature'];
-            IncubationTemperature = data['IncubationTemperature'];
-            IncubationHumidity = data['IncubationHumidity'];
-          } on StateError catch (e) {}
-        });
-      }
-    });
     // String IncubationPulse = Measures.get()
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: Text('Measures'),
+        title: const Text('Measures'),
       ),
       body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           width: double.infinity,
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -77,15 +42,15 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Hello ${(Account == 'Doctor') ? 'Dr/ ' : 'Mr/ '}$FirstName',
-                style: TextStyle(fontSize: 25),
+                'Hello ${(account == 'Doctor') ? 'Dr/ ' : 'Mr/ '}$firstname',
+                style: const TextStyle(fontSize: 25),
               ),
               Center(
                   child: Text(
-                '$BabyName',
-                style: TextStyle(fontSize: 25),
+                babyname,
+                style: const TextStyle(fontSize: 25),
               )),
-              Text(
+              const Text(
                 'Baby Measures',
                 style: TextStyle(
                     color: Colors.black,
@@ -101,8 +66,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                       Container(
                         width: 80,
                         height: 80,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.grey,
                         ),
@@ -114,8 +79,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                               height: 35,
                             ),
                             Text(
-                              '${BabyPulse}',
-                              style: TextStyle(
+                              babypulse,
+                              style: const TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -123,7 +88,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                           ],
                         ),
                       ),
-                      Text(
+                      const Text(
                         'Pulse rate',
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       )
@@ -133,9 +98,9 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                     children: [
                       Container(
                         constraints:
-                            BoxConstraints(minWidth: 80, maxHeight: 80),
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
+                            const BoxConstraints(minWidth: 80, maxHeight: 80),
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.grey,
                         ),
@@ -147,8 +112,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                               height: 35,
                             ),
                             Text(
-                              '${BabySpo}',
-                              style: TextStyle(
+                              babyspo,
+                              style: const TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
@@ -156,7 +121,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                           ],
                         ),
                       ),
-                      Text(
+                      const Text(
                         'SPO2',
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       )
@@ -172,8 +137,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                     Container(
                       width: 80,
                       height: 80,
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.grey,
                       ),
@@ -185,8 +150,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                             height: 35,
                           ),
                           Text(
-                            '${BabyTemperature}',
-                            style: TextStyle(
+                            babytemperature,
+                            style: const TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -194,18 +159,18 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                         ],
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Temperature',
                       style: TextStyle(fontSize: 20, color: Colors.black),
                     )
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 color: Colors.grey,
                 thickness: 2,
               ),
-              Text(
+              const Text(
                 'Incubation Measures',
                 style: TextStyle(
                     color: Colors.black,
@@ -213,12 +178,12 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                'Temperature : ${IncubationTemperature}',
-                style: TextStyle(color: Colors.black, fontSize: 25),
+                'Temperature : $incubationtemperature',
+                style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               Text(
-                'Humidity : ${IncubationHumidity}',
-                style: TextStyle(color: Colors.black, fontSize: 22),
+                'Humidity : $incubationhumidity',
+                style: const TextStyle(color: Colors.black, fontSize: 22),
               ),
             ],
           )),
@@ -227,7 +192,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
           child: Column(
             children: [
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.person,
                   size: 30,
                 ),
@@ -242,12 +207,12 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProfileScreen(),
+                        builder: (context) => const ProfileScreen(),
                       ));
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.logout,
                   size: 30,
                 ),
@@ -265,7 +230,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => const LoginScreen(),
                       ));
                 },
               ),

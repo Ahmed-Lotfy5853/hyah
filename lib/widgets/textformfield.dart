@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-CustomTextFormField({
-  required TextEditingController Controller,
+customTextFormField({
+  required TextEditingController controller,
   required TextInputType keytype,
   required String hint,
   required validate,
@@ -11,7 +11,7 @@ CustomTextFormField({
   bool secure = false,
 }) =>
     TextFormField(
-      controller: Controller,
+      controller: controller,
       keyboardType: keytype,
       decoration: InputDecoration(
           hintText: hint,
@@ -22,7 +22,7 @@ CustomTextFormField({
           ),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
-              borderSide: BorderSide(color: Colors.blue))),
+              borderSide: const BorderSide(color: Colors.blue))),
       validator: validate,
       obscureText: secure,
     );

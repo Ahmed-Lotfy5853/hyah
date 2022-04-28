@@ -10,38 +10,38 @@ import 'splashscreen.dart';
 bool signed = false;
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController LoginUserController = TextEditingController();
+  TextEditingController loginusercontroller = TextEditingController();
 
-  TextEditingController LoginPasswordController = TextEditingController();
+  TextEditingController loginpasswordcontroller = TextEditingController();
 
   bool invisible = true;
 
-  var LoginKey = GlobalKey<FormState>();
+  var loginkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
         elevation: 0,
       ),
       backgroundColor: Colors.white,
       body: Form(
-        key: LoginKey,
+        key: loginkey,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomTextFormField(
-                  Controller: LoginUserController,
+              customTextFormField(
+                  controller: loginusercontroller,
                   keytype: TextInputType.name,
                   hint: 'User Email',
                   validate: (value) {
@@ -54,11 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                   preicon: Icons.person),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              CustomTextFormField(
-                  Controller: LoginPasswordController,
+              customTextFormField(
+                  controller: loginpasswordcontroller,
                   keytype: TextInputType.visiblePassword,
                   hint: 'Password',
                   validate: (value) {
@@ -75,21 +75,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                   },
                   secure: invisible),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               InkWell(
                 splashColor: Colors.transparent,
                 onTap: () {
-                  if (LoginKey.currentState!.validate()) {
+                  if (loginkey.currentState!.validate()) {
                     FirebaseAuth.instance
                         .signInWithEmailAndPassword(
-                            email: LoginUserController.text,
-                            password: LoginPasswordController.text)
+                            email: loginusercontroller.text,
+                            password: loginpasswordcontroller.text)
                         .then((value) async {
                       if (value.user!.emailVerified) {
                         setState(() {
-                          UserID = value.user!.uid;
+                          userID = value.user!.uid;
                         });
                         signed = true;
                         Fluttertoast.showToast(
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MeasuresScreen()));
+                                builder: (context) => const MeasuresScreen()));
                       } else {
                         Fluttertoast.showToast(
                             msg: 'Mail is not verified ',
@@ -113,12 +113,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   width: 100,
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Login',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'New user ?',
                     style:
                         TextStyle(fontSize: 22, fontWeight: FontWeight.normal),
@@ -136,10 +136,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignupScreen(),
+                              builder: (context) => const SignupScreen(),
                             ));
                       },
-                      child: Text(
+                      child: const Text(
                         'Sign up',
                         style: TextStyle(fontSize: 22, color: Colors.blue),
                       ))
