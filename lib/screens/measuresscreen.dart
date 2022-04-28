@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'loginscreen.dart';
 import 'profilescreen.dart';
+import 'splashscreen.dart';
 
 class MeasuresScreen extends StatefulWidget {
   const MeasuresScreen({Key? key}) : super(key: key);
@@ -19,14 +21,68 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
   late String incubationtemperature = '-';
   late String incubationhumidity = '-';
   late String babyname = '-';
-  late String firstname = '-';
-  late String account = '-';
+
+  late String firstname ;
+  late String lastname ;
+  late String email ;
+  late String phone ;
+  late String birthdate ;
+  late String account ;
+  late String gender ;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     // String IncubationPulse = Measures.get()
+    firestore
+        .collection('User')
+        .doc(userID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          try {
+            dynamic data = documentSnapshot.data();
+            firstname = data['FirstName'];
+            lastname = data['LastName'];
+            babyname = data['BabyName'];
+            email = data['Email'];
+            phone = data['Phone'];
+            birthdate = data['BirthDate'];
+            gender = data['Gender'];
+            account = data['Account'];
+          } on StateError catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
+        });
+      }
+    });
+
+    firestore
+        .collection('Measures')
+        .doc(userID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          try {
+            dynamic data = documentSnapshot.data();
+            babypulse = data['BabyPulse'];
+            babyspo = data['babyspo'];
+            babytemperature = data['babytemperature'];
+            incubationtemperature = data['incubationtemperature'];
+            incubationhumidity = data['incubationhumidity'];
+          } on StateError catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
+        });
+      }
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -42,7 +98,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Hello ${(account == 'Doctor') ? 'Dr/ ' : 'Mr/ '}$firstname',
+                'Hello ${(account == 'Doctor') ? 'Dr/ ' : ((gender=='Male')?'Mr/ ':'Mrs/ ')}$firstname',
                 style: const TextStyle(fontSize: 25),
               ),
               Center(
@@ -77,6 +133,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                               'assets/svg/pulse.svg',
                               width: 35,
                               height: 35,
+                              color: Colors.red[900],
+
                             ),
                             Text(
                               babypulse,
@@ -110,6 +168,8 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                               'assets/svg/oxygen-svgrepo-com.svg',
                               width: 35,
                               height: 35,
+                              color: Colors.red[900],
+
                             ),
                             Text(
                               babyspo,
@@ -148,6 +208,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                             'assets/svg/thermometer-temperature-svgrepo-com.svg',
                             width: 35,
                             height: 35,
+                            color: Colors.red[900],
                           ),
                           Text(
                             babytemperature,
@@ -207,8 +268,17 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ProfileScreen(),
-                      ));
+                        builder: (context) {
+
+                         return ProfileScreen(firstname: firstname,
+                              lastname: lastname,
+                              email: email,
+                              phone: phone,
+                              birthdate: birthdate,
+                              gender: gender,
+                              account: account);
+
+                        } ));
                 },
               ),
               ListTile(

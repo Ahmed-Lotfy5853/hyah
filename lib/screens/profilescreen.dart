@@ -6,13 +6,7 @@ import 'signupscreen.dart';
 import 'splashscreen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
   late String firstname = '';
   late String lastname = '';
   late String email = '';
@@ -21,32 +15,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String gender = '';
   late String account = '';
 
+
+  ProfileScreen(
+      {
+        required this.firstname,
+        required this.lastname,
+        required this.email,
+        required this.phone,
+        required this.birthdate,
+        required this.gender,
+        required this.account
+      });
+
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('User')
-        .doc(userID)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          try {
-            dynamic data = documentSnapshot.data();
-            firstname = data['FirstName'];
-            lastname = data['LastName'];
-            email = data['Email'];
-            phone = data['Phone'];
-            birthdate = data['BirthDate'];
-            gender = data['Gender'];
-            account = data['Account'];
-          } on StateError catch (e) {
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        });
-      }
-    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -59,27 +50,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Name : $firstname $lastname',
+              'Name : ${widget.firstname} ${widget.lastname}',
               style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Email : $email',
+              'Email : ${widget.email}',
               style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Phone : +20$phone',
+              'Phone : +20${widget.phone}',
               style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Birth Date : $birthdate',
+              'Birth Date : ${widget.birthdate}',
               style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Gender : $gender',
+              'Gender : ${widget.gender}',
               style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Text(
-              'Account : $account',
+              'Account : ${widget.account}',
               style: const TextStyle(color: Colors.black, fontSize: 25),
             ),
             Container(

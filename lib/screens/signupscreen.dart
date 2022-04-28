@@ -371,7 +371,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProfileScreen()));
+                                builder: (context) =>  ProfileScreen(firstname: signfirstnamecontroller.text, lastname: signlastnamecontroller.text, email: signupemailcontroller.text, phone: signphonecontroller.text, birthdate: signdatecontroller.text, gender: gender, account: client)));
                       }
                     }
                   },
