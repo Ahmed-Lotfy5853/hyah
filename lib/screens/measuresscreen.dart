@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,7 +19,7 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
   late String babypulse = '-';
   late String babyspo = '-';
   late String babytemperature = '-';
-  late String incubationtemperature = '-';
+   String ? incubationtemperature  = '-';
   late String incubationhumidity = '-';
   late String babyname = '-';
 
@@ -29,12 +30,31 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
   late String birthdate ;
   late String account ;
   late String gender ;
+   var Val ;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  // FirebaseDatabase database = FirebaseDatabase.instance;
+ final DatabaseReference ref = FirebaseDatabase.instance.ref();
+  Future<void> dataabase() async {
 
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('test/').get();
+    if (snapshot.exists) {
+      print(snapshot.value);
+    } else {
+      print('No data available.');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     // String IncubationPulse = Measures.get()
+    final daily = ref.child('/measures');
+    daily.onValue.listen((event) { print(event.snapshot.value);
+      Val = event.snapshot.value ?? {'Temperature':'-','Humidity':'-'};
+    setState(() {
+      incubationtemperature = Val['Temperature'].toString();
+      incubationhumidity = Val['Humidity'].toString();
+    });}) ;
     firestore
         .collection('User')
         .doc(userID)
@@ -64,25 +84,16 @@ class _MeasuresScreenState extends State<MeasuresScreen> {
     firestore
         .collection('Measures')
         .doc(userID)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          try {
-            dynamic data = documentSnapshot.data();
-            babypulse = data['BabyPulse'];
-            babyspo = data['babyspo'];
-            babytemperature = data['babytemperature'];
-            incubationtemperature = data['incubationtemperature'];
-            incubationhumidity = data['incubationhumidity'];
-          } on StateError catch (e) {
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        });
-      }
-    });
+        .set( {
+            'BabyPulse':babypulse ,
+            'babyspo':babyspo ,
+            'babytemperature':babytemperature ,
+            'incubationtemperature':incubationtemperature ,
+            'incubationhumidity':incubationhumidity ,
+          });
+
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

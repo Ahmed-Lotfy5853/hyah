@@ -306,12 +306,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   onTap: () async {
                     if (signkey.currentState!.validate()) {
                       if (userID == null) {
+
                         // Call the user's CollectionReference to add a new user
                         FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: signupemailcontroller.text,
                                 password: signuppasswordcontroller.text)
                             .then((value) {
+
                           user.doc(value.user!.uid).set({
                             'UserId': value.user!.uid,
                             'Verified': value.user!.emailVerified,

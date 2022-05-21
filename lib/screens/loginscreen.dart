@@ -87,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             email: loginusercontroller.text,
                             password: loginpasswordcontroller.text)
                         .then((value) async {
+                          print("this is user object:    ${FirebaseAuth.instance.currentUser}");
                       if (value.user!.emailVerified) {
                         setState(() {
                           userID = value.user!.uid;
